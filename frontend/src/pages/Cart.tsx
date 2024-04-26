@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { VscError } from "react-icons/vsc";
 
 const cartItems = [];
 const subTotal = 4000;
@@ -9,11 +10,28 @@ const total = subTotal + tax + shippingCharges;
 
 const Cart = () => {
   const [couponCode, setCouponCode] = useState<string>("");
-  e;
   const [isvalidcouponCode, setIsValidCouponCode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const  timeOutId = setTimeout(()=>{
+
+      if(Math.random() > 0.5) setIsValidCouponCode(true);
+
+      else setIsValidCouponCode(false);
+    },1000)
+  
+    return () => {
+      clearTimeout(timeOutId);
+    }
+  }, [couponCode])
+  
   return (
     <div className="cart">
-      <main></main>
+      <main>
+       { cartItems.map((i) => {
+          
+        })}
+      </main>
       <aside>
         <p>Subtotal: ₹{subTotal}</p>
         <p>Tax: ₹{tax}</p>
@@ -32,13 +50,16 @@ const Cart = () => {
           onChange={(e) => setCouponCode(e.target.value)}
         />
 
-        {couponCode && isvalidcouponCode ? (
-          <span>
-            ₹{discount} off using the {couponCode}
-          </span>
-        ) : (
-          <span>Invalid Coupon</span>
-        )}
+        {couponCode &&
+          (isvalidcouponCode ? (
+            <span className="green">
+              ₹{discount} off using the <code>{couponCode}</code>
+            </span>
+          ) : (
+            <span className="red">
+              Invalid Coupon <VscError />
+            </span>
+          ))}
       </aside>
     </div>
   );
