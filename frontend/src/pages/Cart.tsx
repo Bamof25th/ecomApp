@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
+// import CartItem from "../components/CartItem";
 
-const cartItems = [];
+const cartItems = [
+  {
+    productId: "asdadsa",
+    photo: "asddddddddddd.jasd",
+    name: "macbook",
+    price: 30000,
+    quantitiy: 14,
+    stock: 10,
+  },
+];
 const subTotal = 4000;
 const tax = Math.round(subTotal * 0.18);
 const shippingCharges = 200;
@@ -13,23 +23,21 @@ const Cart = () => {
   const [isvalidcouponCode, setIsValidCouponCode] = useState<boolean>(false);
 
   useEffect(() => {
-    const  timeOutId = setTimeout(()=>{
-
-      if(Math.random() > 0.5) setIsValidCouponCode(true);
-
+    const timeOutId = setTimeout(() => {
+      if (Math.random() > 0.5) setIsValidCouponCode(true);
       else setIsValidCouponCode(false);
-    },1000)
-  
+    }, 1000);
+
     return () => {
       clearTimeout(timeOutId);
-    }
-  }, [couponCode])
-  
+    };
+  }, [couponCode]);
+
   return (
     <div className="cart">
       <main>
-       { cartItems.map((i) => {
-          
+        { cartItems.map((i, idx) => {
+          <CartItem key = {idx} cartItem = {i}/>
         })}
       </main>
       <aside>

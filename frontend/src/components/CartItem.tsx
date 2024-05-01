@@ -1,11 +1,19 @@
-type CartItemsProps = {
-    
+type CartItemProps = {
+import { Link } from 'react-router-dom';
+    cartItem: any;
 }
 
 
-const CartItem = () => {
+const CartItem = ({cartItem} : CartItemProps) => {
+
+  const {photo, name , stock , quantity, price, productId} = cartItem;
   return (
-    <div>CartItem</div>
+    <div className="cart-item">
+        <img src={photo} alt={name} />
+        <article>
+          <Link to={`product/`}/>
+        </article>
+      </div>
   )
 }
 
