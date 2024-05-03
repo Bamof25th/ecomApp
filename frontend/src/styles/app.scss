@@ -32,11 +32,9 @@ $color3: #76abae;
   color: rgb(0, 195, 0);
 }
 
-
-
-
 @import "admin-styles/mixin";
 @import "home";
+@import "cart";
 
 @import "admin-styles/dashboard";
 @import "admin-styles/products";
@@ -77,25 +75,11 @@ $color3: #76abae;
     position: absolute;
     left: calc(100% - 105px);
     top: 8%;
-    >div {
+    > div {
       @include flex(column, flex-start, center, 0.25rem);
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // ********************************
 .admin-container {
