@@ -9,8 +9,8 @@ import {
 import { Link } from "react-router-dom";
 
 const user = {
-  _id: "sad",
-  role: "admin",
+  _id: "",
+  role: "",
 };
 
 function Header() {
