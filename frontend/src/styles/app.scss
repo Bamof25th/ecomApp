@@ -84,6 +84,13 @@ $color3: #76abae;
 }
 
 // ********************************
+
+.heading {
+  @include heading;
+  margin: 1rem 0;
+  text-align: center;
+}
+
 .admin-container {
   @include grid(1fr 4fr, 2rem);
   height: 100vh;
