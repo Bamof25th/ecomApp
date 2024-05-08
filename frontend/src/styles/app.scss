@@ -45,6 +45,24 @@ $color3: #76abae;
 @import "admin-styles/dashboardapp";
 @import "admin-styles/mediaquery";
 
+.container {
+  max-width: 1367px;
+  width: 100%;
+  margin: auto;
+  overflow: auto;
+  > h1 {
+    @include heading;
+    margin: 1rem;
+    text-align: left;
+  }
+}
+
+.heading {
+  @include heading;
+  margin: 1rem 0;
+  text-align: center;
+}
+
 .header {
   @include flex(row, flex-end, stretch, 1.2rem);
   padding: 1rem;
@@ -85,12 +103,6 @@ $color3: #76abae;
 }
 
 // ********************************
-
-.heading {
-  @include heading;
-  margin: 1rem 0;
-  text-align: center;
-}
 
 .admin-container {
   @include grid(1fr 4fr, 2rem);
