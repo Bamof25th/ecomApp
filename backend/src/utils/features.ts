@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
-const url = "mongodb://localhost:27017";
+const url = "mongodb://127.0.0.1:27017";
 export const connectDB = () => {
 
     mongoose.connect(url, {
-        dbName: "ecomdb"
+        dbName: "Ecomdb_24"
     }).then(c => console.log(`DB connected to ${c.connection.host}`))
         .catch((e) => console.log(e));
 
