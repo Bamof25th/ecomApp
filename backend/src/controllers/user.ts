@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../models/user.js";
-import { NewUSerRequestBody } from "../types/types.js";
+import { NewUserRequestBody } from "../types/types.js";
 import { TryCatch } from "../middlewares/error.js";
 import ErrorHandeler from "../utils/utility-class.js";
 
 export const newUser = TryCatch(
   async (
-    req: Request<{}, {}, NewUSerRequestBody>,
+    req: Request<{}, {}, NewUserRequestBody>,
     res: Response,
     next: NextFunction
   ) => {
