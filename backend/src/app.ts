@@ -20,6 +20,10 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/product", productRoute);
 
+
+// made uploads a static file
+app.use("/uploads", express.static("uploads"));
+
 // end middleware for errror handeling
 app.use(errorMiddleware);
 
