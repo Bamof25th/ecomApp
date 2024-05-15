@@ -87,7 +87,7 @@ export const newProduct = TryCatch(
       return next(new ErrorHandeler("please fill all the feilds", 400));
     }
 
-    await Product.create({
+    const product = await Product.create({
       name,
       price,
       stock,
@@ -95,7 +95,7 @@ export const newProduct = TryCatch(
       photo: photo?.path,
     });
 
-    await invalidateCache({ product: true });
+    await invalidateCache({ product: true, productId: String(product._id) });
 
     return res
       .status(201)
@@ -125,7 +125,7 @@ export const updateProduct = TryCatch(
     if (category) product.category = category.toLowerCase();
 
     await product.save();
-    await invalidateCache({ product: true });
+    await invalidateCache({ product: true, productId: String(product._id) });
 
     return res
       .status(201)
@@ -141,7 +141,7 @@ export const deleteProduct = TryCatch(
       console.log("Product Photo deleted");
     });
     await product.deleteOne();
-    await invalidateCache({ product: true });
+    await invalidateCache({ product: true, productId: String(product._id) });
 
     return res
       .status(201)

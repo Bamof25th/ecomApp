@@ -21,7 +21,7 @@ connectDB(mongoURi);
 
 export const myCache = new NodeCache();
 
-//middleware
+//middleware 
 
 app.use(express.json());
 app.use(morgan("dev"))
