@@ -4,11 +4,11 @@ const schema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please Enter your name"],
+      required: [true, "Please Enter product name"],
     },
     photo: {
       type: String,
-      required: [true, "Please enter Proguct Image"],
+      required: [true, "Please enter Product Image"],
     },
     price: {
       type: Number,
