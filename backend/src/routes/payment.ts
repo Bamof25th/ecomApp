@@ -5,6 +5,7 @@ import {
   deleteCoupon,
   newCoupon,
 } from "../controllers/payment.js";
+import { adminOnly } from "../middlewares/auth.js";
 
 const app = express.Router();
 
@@ -12,12 +13,12 @@ const app = express.Router();
 app.get("/discount", applyDiscount);
 
 // Route - /api/v1/payment/coupon/new
-app.post("/coupon/new", newCoupon);
+app.post("/coupon/new", adminOnly, newCoupon);
 
 // Route - /api/v1/payment/coupon/all
-app.get("/coupon/all", allCoupons);
+app.get("/coupon/all",  adminOnly,allCoupons);
 
 // Route - /api/v1/payment/coupon/:id
-app.delete("/coupon/:id", deleteCoupon);
+app.delete("/coupon/:id",  adminOnly,deleteCoupon);
 
 export default app;
