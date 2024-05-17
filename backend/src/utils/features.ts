@@ -69,3 +69,24 @@ export const calculatePercentage = (thisMonth: number, lastMonth: number) => {
   const percentage = ((thisMonth - lastMonth) / lastMonth) * 100;
   return Number(percentage.toFixed(0));
 };
+
+export const getInventories = async ({
+  categories,
+  productCount,
+}: {
+  categories: string[];
+  productCount: number;
+}) => {
+  const categoriesCount = await Promise.all(
+    categories.map((category) => Product.countDocuments({ category }))
+  );
+
+  const categoryCount: Record<string, number>[] = [];
+
+  categories.forEach((category, i) => {
+    categoryCount.push({
+      [category]: Math.round((categoriesCount[i] / productCount) * 100),
+    });
+  });
+  return categoryCount;
+};
