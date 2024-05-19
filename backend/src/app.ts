@@ -11,6 +11,7 @@ import dashboardRoute from "./routes/stats.js";
 import NodeCache from "node-cache";
 import morgan from "morgan";
 import { config } from "dotenv";
+import Stripe from "stripe";
 
 config({
   path: "./.env",
@@ -18,9 +19,11 @@ config({
 
 const port = process.env.PORT || 4000;
 const mongoURi = process.env.MONGO_URI || "";
+const stripekey = process.env.STRIPE_KEY || "";
 const app = express();
 connectDB(mongoURi);
 
+export const stripe = new Stripe(stripekey)
 export const myCache = new NodeCache();
 
 //middleware
