@@ -194,7 +194,7 @@ export const getDashBoardStats = TryCatch(async (req, res, next) => {
 export const getPieCharts = TryCatch(async (req, res, next) => {
   let charts;
 
-  const key = "admin-pie-chart";
+  const key = "admin-pie-charts";
 
   if (myCache.has(key)) charts = JSON.parse(myCache.get(key) as string);
   else {
@@ -361,7 +361,7 @@ export const getBarCharts = TryCatch(async (req, res, next) => {
 export const getLineCharts = TryCatch(async (req, res, next) => {
   let charts;
 
-  const key = "admin-bar-lines";
+  const key = "admin-line-charts";
 
   if (myCache.has(key)) charts = JSON.parse(myCache.get(key) as string);
   else {

@@ -86,8 +86,7 @@ export const newProduct = TryCatch(
 
       return next(new ErrorHandeler("please fill all the feilds", 400));
     }
-
-    const product = await Product.create({
+    await Product.create({
       name,
       price,
       stock,
@@ -95,7 +94,7 @@ export const newProduct = TryCatch(
       photo: photo?.path,
     });
 
-    await invalidateCache({ product: true, productId: String(product._id) });
+    invalidateCache({ product: true, admin: true });
 
     return res
       .status(201)
@@ -125,7 +124,11 @@ export const updateProduct = TryCatch(
     if (category) product.category = category.toLowerCase();
 
     await product.save();
-    await invalidateCache({ product: true, productId: String(product._id) });
+    invalidateCache({
+      product: true,
+      admin: true,
+      productId: String(product._id),
+    });
 
     return res
       .status(201)
@@ -141,8 +144,11 @@ export const deleteProduct = TryCatch(
       console.log("Product Photo deleted");
     });
     await product.deleteOne();
-    await invalidateCache({ product: true, productId: String(product._id) });
-
+    invalidateCache({
+      product: true,
+      admin: true,
+      productId: String(product._id),
+    });
     return res
       .status(201)
       .json({ success: true, message: "Product Deleted successfully" });

@@ -12,7 +12,7 @@ export const connectDB = (uri: string) => {
     .catch((e) => console.log(e));
 };
 
-export const invalidateCache = async ({
+export const invalidateCache =  ({
   product,
   order,
   admin,
@@ -28,12 +28,11 @@ export const invalidateCache = async ({
     ];
 
     if (typeof productId === "string") productKeys.push(`product-${productId}`);
-    productKeys.push();
     if (typeof productId === "object")
       productId.forEach((e) => {
         productKeys.push(`product-${e}`);
       });
-    productKeys.push();
+
 
     myCache.del(productKeys);
   }
@@ -48,6 +47,12 @@ export const invalidateCache = async ({
     myCache.del(orderKeys);
   }
   if (admin) {
+    myCache.del([
+      "admin-stats",
+      "admin-pie-charts",
+      "admin-bar-charts",
+      "admin-line-charts",
+    ]);
   }
 };
 
