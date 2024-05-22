@@ -48,7 +48,6 @@ const App = () => {
       if (user) {
         const data = await getUser(user.uid);
         dispatch(userExist(data.user));
-        console.log("logedin");
       } else {
         dispatch(userNotExist());
       }
