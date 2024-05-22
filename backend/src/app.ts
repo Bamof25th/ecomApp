@@ -12,6 +12,7 @@ import NodeCache from "node-cache";
 import morgan from "morgan";
 import { config } from "dotenv";
 import Stripe from "stripe";
+import cors from "cors";
 
 config({
   path: "./.env",
@@ -23,13 +24,16 @@ const stripekey = process.env.STRIPE_KEY || "";
 const app = express();
 connectDB(mongoURi);
 
-export const stripe = new Stripe(stripekey)
+export const stripe = new Stripe(stripekey);
 export const myCache = new NodeCache();
 
 //middleware
 
 app.use(express.json());
 app.use(morgan("dev"));
+
+//CORS policy configuration
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Api working with /api/v1");
