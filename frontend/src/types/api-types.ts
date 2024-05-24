@@ -22,5 +22,18 @@ export type AllProductsResponce = {
 };
 export type CategoriesResponce = {
   success: string;
-  products: string[];
+  categories: string[];
+};
+
+export type SearchProductsResponce = {
+  success: string;
+  products: Product[];
+  totalPage: number;
+};
+export type SearchProductsRequest = {
+  price: number;
+  page: number;
+  category: string;
+  search: string;
+  sort: string;
 };

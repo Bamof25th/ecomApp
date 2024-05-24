@@ -1,12 +1,44 @@
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
+import {
+  useCategoriesQuery,
+  useSearchProductsQuery,
+} from "../redux/api/productAPI";
+import toast from "react-hot-toast";
+import { customError } from "../types/api-types";
+import { Skeleton } from "../components/Loader";
 
 const Search = () => {
+  const {
+    data: categoriesResponce,
+    isLoading: loadingCategories,
+    isError,
+    error,
+  } = useCategoriesQuery("");
+
+  if (isError) toast.error((error as customError).data.message);
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [maxPrice, setMaxPrice] = useState(0);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
+
+  const {
+    data: searchedData,
+    isLoading: productLoading,
+    isError: productIsError,
+    error: productError,
+  } = useSearchProductsQuery({
+    search,
+    sort,
+    category,
+    page,
+    price: maxPrice,
+  });
+  if (productIsError) toast.error((productError as customError).data.message);
+
+  console.log(searchedData);
 
   const addTocartHandeler = () => {};
 
@@ -43,8 +75,12 @@ const Search = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">All</option>
-            <option value="">sample1</option>
-            <option value="">sample2</option>
+            {!loadingCategories &&
+              categoriesResponce?.categories.map((i) => (
+                <option key={i} value={i}>
+                  {i.toUpperCase()}
+                </option>
+              ))}
           </select>
         </div>
       </aside>
@@ -56,35 +92,43 @@ const Search = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        {productLoading ? (
+          <Skeleton length={10} />
+        ) : (
+          <div className="search-product-list">
+            {searchedData?.products.map((i) => (
+              <ProductCard
+                key={i._id}
+                productId={i._id}
+                name={i.name}
+                price={i.price}
+                stock={i.stock}
+                handeler={addTocartHandeler}
+                photo={i.photo}
+              />
+            ))}
+          </div>
+        )}
 
-        <div className="search-product-list">
-          <ProductCard
-            productId="sad"
-            name="macbook"
-            price={2132311}
-            stock={12}
-            handeler={addTocartHandeler}
-            photo="https://m.media-amazon.com/images/I/61RJn0ofUsL._AC_UY218_.jpg"
-          />
-        </div>
-
-        <article>
-          <button
-            disabled={!isPrevpage}
-            onClick={() => setPage((prev) => prev - 1)}
-          >
-            Prev
-          </button>
-          <span>
-            {page} of {4}
-          </span>
-          <button
-            disabled={!isNextpage}
-            onClick={() => setPage((prev) => prev + 1)}
-          >
-            Next
-          </button>
-        </article>
+        {searchedData && searchedData?.totalPage > 1 && (
+          <article>
+            <button
+              disabled={!isPrevpage}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              Prev
+            </button>
+            <span>
+              {page} of {searchedData?.totalPage}
+            </span>
+            <button
+              disabled={!isNextpage}
+              onClick={() => setPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          </article>
+        )}
       </main>
     </div>
   );

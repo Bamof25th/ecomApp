@@ -24,7 +24,7 @@ app.get("/latest", getlatestProducts);
 app.get("/all", getAllProducts);
 
 // Route - api/v1/product/categories
-app.get("/categories", adminOnly, getAllCategories);
+app.get("/categories", getAllCategories);
 
 // Route - api/v1/product/admin-products
 app.get("/admin-products", adminOnly, getAdminProducts);
