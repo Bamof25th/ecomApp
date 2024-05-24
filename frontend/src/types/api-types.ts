@@ -1,4 +1,4 @@
-import { User } from "./types";
+import { Product, User } from "./types";
 
 export type MessageResponce = {
   success: string;
@@ -7,4 +7,8 @@ export type MessageResponce = {
 export type UserResponce = {
   success: string;
   user: User;
+};
+export type AllProductsResponce = {
+  success: string;
+  products: Product[];
 };

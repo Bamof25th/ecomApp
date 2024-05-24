@@ -268,6 +268,20 @@ $color3: #76abae;
   }
 }
 
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-shape {
+  width: 100%;
+  height: 30px;
+  background-color: #ddd;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite;
+}
+
 @keyframes loading-animation {
   to {
     transform: rotateZ(360deg);
@@ -276,5 +290,16 @@ $color3: #76abae;
 @keyframes up-and-down {
   to {
     transform: translate(-50%, -20%);
+  }
+}
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
   }
 }

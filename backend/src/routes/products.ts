@@ -18,10 +18,10 @@ const app = express.Router();
 app.post("/new", adminOnly, singleUpload, newProduct);
 
 // Route - api/v1/product/latest
-app.get("/latest", adminOnly, getlatestProducts);
+app.get("/latest", getlatestProducts);
 
 // Route - api/v1/product/all  . with filter
-app.get("/all",  getAllProducts);
+app.get("/all", getAllProducts);
 
 // Route - api/v1/product/categories
 app.get("/categories", adminOnly, getAllCategories);

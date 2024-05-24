@@ -16,7 +16,6 @@ import { invalidateCache } from "../utils/features.js";
 export const getlatestProducts = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
     let products = [];
-
     if (myCache.has("latest-product")) {
       products = JSON.parse(myCache.get("latest-product") as string);
     } else {

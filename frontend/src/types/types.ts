@@ -7,3 +7,11 @@ export interface User {
   dob: string;
   _id: string;
 }
+export interface Product {
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  photo: string;
+  _id: string;
+}
