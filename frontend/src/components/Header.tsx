@@ -8,7 +8,9 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { User } from "./../types/types";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import toast from "react-hot-toast";
 
 interface PropsType {
   user: User | null;
@@ -19,8 +21,15 @@ function Header({ user }: PropsType) {
 
   //*logoutHandeler
 
-  const logoutHandeler = () => {
-    setIsOpen(false);
+  const logoutHandeler = async () => {
+    try {
+      await signOut(auth);
+      toast.success("sign Out successfully");
+
+      setIsOpen(false);
+    } catch (error) {
+      toast.error("sign Out failed");
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ function Header({ user }: PropsType) {
             <FaUser />
           </button>
           <dialog open={isOpen}>
-            <div className="">
+            <div>
               {user.role === "admin" && (
                 <Link onClick={() => setIsOpen(false)} to="/admin/dashboard">
                   Admin
@@ -49,14 +58,14 @@ function Header({ user }: PropsType) {
               <Link onClick={() => setIsOpen(false)} to="/orders">
                 Orders
               </Link>
-              <button>
+              <button onClick={logoutHandeler}>
                 <FaSignOutAlt />
               </button>
             </div>
           </dialog>
         </>
       ) : (
-        <Link to={"/login"} onClick={logoutHandeler}>
+        <Link to={"/login"}>
           <FaSignInAlt />
         </Link>
       )}
