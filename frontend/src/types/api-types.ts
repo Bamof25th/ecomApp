@@ -37,3 +37,7 @@ export type SearchProductsRequest = {
   search: string;
   sort: string;
 };
+export type NewProductRequest = {
+  id: number;
+  formData: FormData;
+};
