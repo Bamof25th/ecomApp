@@ -37,7 +37,11 @@ export type SearchProductsRequest = {
   search: string;
   sort: string;
 };
+export type ProductDeatailsResponce = {
+  success: boolean;
+  product: Product;
+};
 export type NewProductRequest = {
-  id: number;
+  id: string;
   formData: FormData;
 };

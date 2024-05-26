@@ -47,7 +47,8 @@ const Products = () => {
   const { user } = useSelector(
     (state: { userReducer: userReducerInitaialState }) => state.userReducer
   );
-  const { data, isLoading, isError, error } = useAllProductsQuery(user!._id!);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+  const { data, isLoading, isError, error } = useAllProductsQuery(user?._id!);
   const [rows, setRows] = useState<DataType[]>([]);
 
   if (isError) toast.error((error as customError).data.message);

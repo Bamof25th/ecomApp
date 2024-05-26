@@ -1,16 +1,33 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
+import { useSelector } from "react-redux";
+import { useProductDetailsQuery } from "../../../redux/api/productAPI";
+import { useParams } from "react-router-dom";
+import { userReducerInitaialState } from "./../../../types/reducer-types";
 
 const img =
   "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
 
 const Productmanagement = () => {
-  const [price, setPrice] = useState<number>(2000);
-  const [stock, setStock] = useState<number>(10);
-  const [name, setName] = useState<string>("Puma Shoes");
-  const [photo, setPhoto] = useState<string>(img);
-  const [category, setCategory] = useState<string>("footwear");
+  const { user } = useSelector(
+    (state: { userReducer: userReducerInitaialState }) => state.userReducer
+  );
+
+  const params = useParams();
+
+  const { data, error } = useProductDetailsQuery(params.id!);
+  console.log(error);
+
+  const [product, setProduct] = useState({
+    photo: "",
+    name: "",
+    price: 0,
+    stock: 0,
+    category: "",
+  });
+
+  const { price, photo, name, stock, category } = product;
 
   const [priceUpdate, setPriceUpdate] = useState<number>(price);
   const [stockUpdate, setStockUpdate] = useState<number>(stock);
@@ -43,6 +60,11 @@ const Productmanagement = () => {
     setPhoto(photoUpdate);
   };
 
+  useEffect(() => {
+    if (data) {
+      setProduct(data.product);
+    }
+  }, [data]);
   return (
     <div className="admin-container">
       <AdminSidebar />

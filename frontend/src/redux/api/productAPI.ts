@@ -4,6 +4,7 @@ import {
   CategoriesResponce,
   MessageResponce,
   NewProductRequest,
+  ProductDeatailsResponce,
   SearchProductsRequest,
   SearchProductsResponce,
 } from "../../types/api-types";
@@ -14,15 +15,20 @@ export const productAPI = createApi({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/v1/product/`,
   }),
 
+  tagTypes: ["product"],
+
   endpoints: (builder) => ({
     latestProducts: builder.query<AllProductsResponce, string>({
       query: () => "latest",
+      providesTags: ["product"],
     }),
     allProducts: builder.query<AllProductsResponce, string>({
       query: (id: string) => `admin-products?id=${id}`,
+      providesTags: ["product"],
     }),
     categories: builder.query<CategoriesResponce, string>({
       query: () => `categories`,
+      providesTags: ["product"],
     }),
     searchProducts: builder.query<
       SearchProductsResponce,
@@ -37,6 +43,11 @@ export const productAPI = createApi({
 
         return base;
       },
+      providesTags: ["product"],
+    }),
+    productDetails: builder.query<ProductDeatailsResponce, string>({
+      query: (id) => id,
+      providesTags: ["product"],
     }),
     newProduct: builder.mutation<MessageResponce, NewProductRequest>({
       query: ({ formData, id }) => ({
@@ -44,6 +55,7 @@ export const productAPI = createApi({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["product"],
     }),
   }),
 });
@@ -54,4 +66,5 @@ export const {
   useCategoriesQuery,
   useSearchProductsQuery,
   useNewProductMutation,
+  useProductDetailsQuery,
 } = productAPI;
