@@ -2,9 +2,15 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useSelector } from "react-redux";
-import { useProductDetailsQuery } from "../../../redux/api/productAPI";
-import { useParams } from "react-router-dom";
+import {
+  useDeleteProductMutation,
+  useProductDetailsQuery,
+  useUpdateProductMutation,
+} from "../../../redux/api/productAPI";
+import { useNavigate, useParams } from "react-router-dom";
 import { userReducerInitaialState } from "./../../../types/reducer-types";
+import { server } from "../../../redux/store";
+import { responseToast } from "../../../utils/features";
 
 const img =
   "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
@@ -14,27 +20,30 @@ const Productmanagement = () => {
     (state: { userReducer: userReducerInitaialState }) => state.userReducer
   );
 
+  const navigate = useNavigate();
   const params = useParams();
 
   const { data, error } = useProductDetailsQuery(params.id!);
   console.log(error);
 
-  const [product, setProduct] = useState({
+  const { price, photo, name, stock, category } = data?.product || {
+    _id: "",
     photo: "",
     name: "",
     price: 0,
     stock: 0,
     category: "",
-  });
-
-  const { price, photo, name, stock, category } = product;
+  };
 
   const [priceUpdate, setPriceUpdate] = useState<number>(price);
   const [stockUpdate, setStockUpdate] = useState<number>(stock);
   const [nameUpdate, setNameUpdate] = useState<string>(name);
   const [categoryUpdate, setCategoryUpdate] = useState<string>(category);
-  const [photoUpdate, setPhotoUpdate] = useState<string>(photo);
+  const [photoUpdate, setPhotoUpdate] = useState<string>("");
   const [photoFile, setPhotoFile] = useState<File>();
+
+  const [updateProduct] = useUpdateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
 
   const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
@@ -52,17 +61,41 @@ const Productmanagement = () => {
     }
   };
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setName(nameUpdate);
-    setPrice(priceUpdate);
-    setStock(stockUpdate);
-    setPhoto(photoUpdate);
+
+    const formData = new FormData();
+
+    if (nameUpdate) formData.set("name", nameUpdate);
+    if (priceUpdate) formData.set("price", priceUpdate.toString());
+    if (stockUpdate != undefined) formData.set("stock", stockUpdate.toString());
+    if (photoFile) formData.set("photo", photoFile);
+    if (category) formData.set("category", categoryUpdate);
+
+    const res = await updateProduct({
+      formData,
+      userId: user?._id!,
+      productId: data?.product._id!,
+    });
+
+    responseToast(res, navigate, "/admin/product");
+  };
+
+  const deleteHandler = async () => {
+    const res = await deleteProduct({
+      userId: user?._id!,
+      productId: data?.product._id!,
+    });
+
+    responseToast(res, navigate, "/admin/product");
   };
 
   useEffect(() => {
     if (data) {
-      setProduct(data.product);
+      setNameUpdate(data.product.name);
+      setPriceUpdate(data.product.price);
+      setStockUpdate(data.product.stock);
+      setCategoryUpdate(data.product.category);
     }
   }, [data]);
   return (
@@ -70,8 +103,8 @@ const Productmanagement = () => {
       <AdminSidebar />
       <main className="product-management">
         <section>
-          <strong>ID - fsdfsfsggfgdf</strong>
-          <img src={photo} alt="Product" />
+          <strong>ID - {data?.product._id}</strong>
+          <img src={`${server}/${photo}`} alt="Product" />
           <p>{name}</p>
           {stock > 0 ? (
             <span className="green">{stock} Available</span>
@@ -81,7 +114,7 @@ const Productmanagement = () => {
           <h3>₹{price}</h3>
         </section>
         <article>
-          <button className="product-delete-btn">
+          <button className="product-delete-btn" onClick={deleteHandler}>
             <FaTrash />
           </button>
           <form onSubmit={submitHandler}>
