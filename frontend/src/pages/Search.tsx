@@ -9,6 +9,7 @@ import { customError } from "../types/api-types";
 import { Skeleton } from "../components/Loader";
 import { addToCart } from "../redux/reducer/cartReducer";
 import { useDispatch } from "react-redux";
+import { CartItem } from "../types/types";
 
 const Search = () => {
   const dispatch = useDispatch();

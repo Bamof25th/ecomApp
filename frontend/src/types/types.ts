@@ -26,8 +26,8 @@ export type ShippingInfo = {
 
 export type CartItem = {
   productId: string;
-  photo: string;
   name: string;
+  photo: string;
   price: number;
   quantity: number;
   stock: number;
