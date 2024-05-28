@@ -7,8 +7,11 @@ import {
 import toast from "react-hot-toast";
 import { customError } from "../types/api-types";
 import { Skeleton } from "../components/Loader";
+import { addToCart } from "../redux/reducer/cartReducer";
+import { useDispatch } from "react-redux";
 
 const Search = () => {
+  const dispatch = useDispatch();
   const {
     data: categoriesResponce,
     isLoading: loadingCategories,
@@ -40,7 +43,11 @@ const Search = () => {
 
   console.log(searchedData);
 
-  const addTocartHandeler = () => {};
+  const addTocartHandeler = (cartItem: CartItem) => {
+    if (cartItem.stock < 1) return toast.error("Out of Stock");
+    dispatch(addToCart(cartItem));
+    toast.success("Added to cart");
+  };
 
   const isPrevpage = page > 1;
   const isNextpage = page < 4;

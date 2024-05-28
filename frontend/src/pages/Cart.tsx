@@ -1,28 +1,39 @@
 import { useEffect, useState } from "react";
 import { VscError } from "react-icons/vsc";
-import CartItem from "../components/CartItem";
+import CartItemCard from "../components/CartItem";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { cartReducerInitialState } from "../types/reducer-types";
+import {
+  addToCart,
+  calculatePrice,
+  removeCartItems,
+} from "../redux/reducer/cartReducer";
+import { CartItem } from "../types/types";
 // import CartItem from "../components/CartItem";
 
-const cartItems = [
-  {
-    productId: "asdadsa",
-    photo: "https://m.media-amazon.com/images/I/61RJn0ofUsL._AC_UY218_.jpg",
-    name: "macbook",
-    price: 30000,
-    quantity: 2,
-    stock: 10,
-  },
-];
-const subTotal = 4000;
-const tax = Math.round(subTotal * 0.18);
-const shippingCharges = 200;
-const discount = 200;
-const total = subTotal + tax + shippingCharges;
-
 const Cart = () => {
+  const { cartItems, discount, shippingCharges, subTotal, tax, total } =
+    useSelector(
+      (state: { cartReducer: cartReducerInitialState }) => state.cartReducer
+    );
+
+  const dispatch = useDispatch();
+
   const [couponCode, setCouponCode] = useState<string>("");
   const [isvalidcouponCode, setIsValidCouponCode] = useState<boolean>(false);
+
+  const incrementHandeler = (cartItem: CartItem) => {
+    if (cartItem.quantity >= cartItem.stock) return;
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }));
+  };
+  const decrementHandeler = (cartItem: CartItem) => {
+    if (cartItem.quantity >= 1) return;
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }));
+  };
+  const removeHandeler = (productId: string) => {
+    dispatch(removeCartItems(productId));
+  };
 
   useEffect(() => {
     const timeOutId = setTimeout(() => {
@@ -35,12 +46,23 @@ const Cart = () => {
     };
   }, [couponCode]);
 
+  useEffect(() => {
+    dispatch(calculatePrice());
+  }, [cartItems]);
   return (
     <div className="cart">
       <main>
         {cartItems.length > 0 ? (
           cartItems.map((i, idx) => {
-            return <CartItem key={idx} cartItem={i} />;
+            return (
+              <CartItemCard
+                key={idx}
+                cartItem={i}
+                incrementHandeler={incrementHandeler}
+                decrementHandeler={decrementHandeler}
+                removeHandeler={removeHandeler}
+              />
+            );
           })
         ) : (
           <h1>No items added!</h1>
