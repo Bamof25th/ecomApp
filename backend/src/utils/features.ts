@@ -12,7 +12,7 @@ export const connectDB = (uri: string) => {
     .catch((e) => console.log(e));
 };
 
-export const invalidateCache =  ({
+export const invalidateCache = ({
   product,
   order,
   admin,
@@ -22,29 +22,26 @@ export const invalidateCache =  ({
 }: InvalidateCacheProps) => {
   if (product) {
     const productKeys: string[] = [
-      "latest-product",
+      "latest-products",
       "categories",
-      "all-product",
+      "all-products",
     ];
 
     if (typeof productId === "string") productKeys.push(`product-${productId}`);
-    if (typeof productId === "object")
-      productId.forEach((e) => {
-        productKeys.push(`product-${e}`);
-      });
 
+    if (typeof productId === "object")
+      productId.forEach((i) => productKeys.push(`product-${i}`));
 
     myCache.del(productKeys);
   }
   if (order) {
-    //
-    const orderKeys: string[] = [
-      "all-order",
-      `my-order-${userId}]`,
+    const ordersKeys: string[] = [
+      "all-orders",
+      `my-orders-${userId}`,
       `order-${orderId}`,
     ];
 
-    myCache.del(orderKeys);
+    myCache.del(ordersKeys);
   }
   if (admin) {
     myCache.del([

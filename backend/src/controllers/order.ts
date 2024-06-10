@@ -20,13 +20,13 @@ export const myOrders = TryCatch(
       myCache.set(key, JSON.stringify(orders));
     }
 
-    res.status(201).json({ success: true, orders });
+    return res.status(201).json({ success: true, orders });
   }
 );
 
 export const allOrders = TryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    const key = `my-order`;
+    const key = `all-orders`;
 
     let orders = [];
 
@@ -36,28 +36,29 @@ export const allOrders = TryCatch(
       myCache.set(key, JSON.stringify(orders));
     }
 
-    res.status(201).json({ success: true, orders });
+    return res.status(201).json({ success: true, orders });
   }
 );
 
-export const getSingleOrders = TryCatch(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+export const getSingleOrder = TryCatch(async (req, res, next) => {
+  const { id } = req.params;
+  const key = `order-${id}`;
 
-    const key = `order-${id}`;
+  let order;
 
-    let order;
+  if (myCache.has(key)) order = JSON.parse(myCache.get(key) as string);
+  else {
+    order = await Order.findById(id).populate("user", "name");
 
-    if (myCache.has(key)) order = JSON.parse(myCache.get(key) as string);
-    else {
-      order = await Order.findById(id).populate("user", "name");
-      if (!order) return next(new ErrorHandeler("Order Not Found", 404));
-      myCache.set(key, JSON.stringify(order));
-    }
+    if (!order) return next(new ErrorHandeler("Order Not Found", 404));
 
-    res.status(201).json({ success: true, order });
+    myCache.set(key, JSON.stringify(order));
   }
-);
+  return res.status(200).json({
+    success: true,
+    order,
+  });
+});
 
 export const newOrder = TryCatch(
   async (
@@ -109,7 +110,7 @@ export const newOrder = TryCatch(
       productId: order.orderItems.map((i) => String(i.productId)),
     });
 
-    res
+    return res
       .status(201)
       .json({ success: true, message: "Order Placed Successfully" });
   }
@@ -141,10 +142,9 @@ export const processOrder = TryCatch(
       admin: true,
       userId: order.user,
       orderId: String(order._id),
-      productId: order.orderItems.map((i) => String(i.productId)),
     });
 
-    res
+    return res
       .status(200)
       .json({ success: true, message: "Order Processed Successfully" });
   }
@@ -165,10 +165,9 @@ export const deleteOrder = TryCatch(
       admin: true,
       userId: order.user,
       orderId: String(order._id),
-      productId: order.orderItems.map((i) => String(i.productId)),
     });
 
-    res
+    return res
       .status(200)
       .json({ success: true, message: "Order Deleted Successfully" });
   }

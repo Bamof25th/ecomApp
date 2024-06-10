@@ -2,7 +2,7 @@ import express from "express";
 import {
   allOrders,
   deleteOrder,
-  getSingleOrders,
+  getSingleOrder,
   myOrders,
   newOrder,
   processOrder,
@@ -22,7 +22,7 @@ app.get("/all", adminOnly, allOrders);
 
 app
   .route("/:id")
-  .get(getSingleOrders)
+  .get(getSingleOrder)
   .put(adminOnly, processOrder)
   .delete(adminOnly, deleteOrder);
 
