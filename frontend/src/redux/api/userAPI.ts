@@ -1,13 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { MessageResponce, UserResponce } from "../../types/api-types";
-import { User } from "../../types/types";
 import axios from "axios";
+import {
+  AllUserResponce,
+  DeleteUserRequest,
+  MessageResponce,
+  UserResponce,
+} from "../../types/api-types";
+import { User } from "../../types/types";
 
 export const userAPI = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/v1/user/`,
   }),
+  tagTypes: ["users"],
   endpoints: (builder) => ({
     login: builder.mutation<MessageResponce, User>({
       query: (user) => ({
@@ -15,6 +21,18 @@ export const userAPI = createApi({
         method: "POST",
         body: user,
       }),
+      invalidatesTags: ["users"],
+    }),
+    deleteUser: builder.mutation<MessageResponce, DeleteUserRequest>({
+      query: ({ userId, adminUserId }) => ({
+        url: `${userId}?id=${adminUserId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["users"],
+    }),
+    allUsers: builder.query<AllUserResponce, string>({
+      query: (id) => `all?id=${id}`,
+      providesTags: ["users"],
     }),
   }),
 });
@@ -22,7 +40,7 @@ export const userAPI = createApi({
 export const getUser = async (id: string) => {
   // eslint-disable-next-line no-useless-catch
   try {
-    const { data } : {data : UserResponce} = await axios.get(
+    const { data }: { data: UserResponce } = await axios.get(
       `${import.meta.env.VITE_SERVER}/api/v1/user/${id}`
     );
     return data;
@@ -31,4 +49,5 @@ export const getUser = async (id: string) => {
   }
 };
 
-export const { useLoginMutation } = userAPI;
+export const { useLoginMutation, useAllUsersQuery, useDeleteUserMutation } =
+  userAPI;
