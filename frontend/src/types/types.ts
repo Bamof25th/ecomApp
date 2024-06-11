@@ -49,3 +49,33 @@ export type Order = {
   };
   _id: string;
 };
+
+type CountAndChange = {
+  revenue: number;
+  product: number;
+  user: number;
+  order: number;
+};
+
+type LatestTransaction = {
+  _id: string;
+  discount: number;
+  amount: number;
+  quantity: number;
+  status: string;
+};
+
+export type Stats = {
+  categoryCount: Record<string, number>[];
+  changePercent: CountAndChange;
+  counts: CountAndChange;
+  chart: {
+    order: number[];
+    revenue: number[];
+  };
+  UserRatio: {
+    male: number;
+    female: number;
+  };
+  latesttransaction: LatestTransaction[];
+};

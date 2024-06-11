@@ -165,7 +165,7 @@ export const getDashBoardStats = TryCatch(async (req, res, next) => {
       female: femaleUsersCount,
     };
 
-    const moifyLatestTransaction = latestTransaction.map((i) => ({
+    const modifyLatestTransaction = latestTransaction.map((i) => ({
       _id: i._id,
       discount: i.discount,
       amount: i.total,
@@ -182,7 +182,7 @@ export const getDashBoardStats = TryCatch(async (req, res, next) => {
         revenue: orderMonthRevenue,
       },
       UserRatio,
-      moifyLatestTransaction,
+      modifyLatestTransaction,
     };
 
     myCache.set(key, JSON.stringify(stats));
