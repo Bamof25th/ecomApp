@@ -37,7 +37,7 @@ export type OrderItem = Omit<CartItem, "stock"> & { _id: string };
 export type Order = {
   orderItems: OrderItem[];
   shippingInfo: ShippingInfo;
-  subTotal: number;
+  subtotal: number;
   tax: number;
   shippingCharges: number;
   discount: number;
@@ -77,5 +77,51 @@ export type Stats = {
     male: number;
     female: number;
   };
-  latesttransaction: LatestTransaction[];
+  latestTransaction: LatestTransaction[];
+};
+
+type RevenueDistribution = {
+  netMargin: number;
+  discount: number;
+  productionCost: number;
+  burnt: number;
+  marketingCost: number;
+};
+
+type OrderFullfillment = {
+  processing: number;
+  shipped: number;
+  delivered: number;
+};
+
+type UserAgeGroup = {
+  teen: number;
+  adult: number;
+  old: number;
+};
+
+export type Pie = {
+  orderFullfillment: OrderFullfillment;
+  productCategories: Record<string, number>[];
+  stockAvailability: {
+    inStock: number;
+    outOfStock: number;
+  };
+  revenueDistribution: RevenueDistribution;
+  usersAgeGroup: UserAgeGroup;
+  adminCustomer: {
+    admin: number;
+    customer: number;
+  };
+};
+export type Bar = {
+  users: number[];
+  products: number[];
+  orders: number[];
+};
+export type Line = {
+  users: number[];
+  products: number[];
+  discount: number[];
+  revenue: number[];
 };

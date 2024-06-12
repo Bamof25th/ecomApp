@@ -1,8 +1,8 @@
 import {
-    Elements,
-    PaymentElement,
-    useElements,
-    useStripe,
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { FormEvent, useState } from "react";
@@ -27,7 +27,7 @@ const CheckOutForm = () => {
   const {
     shippingInfo,
     cartItems,
-    subTotal,
+    subtotal,
     tax,
     discount,
     shippingCharges,
@@ -44,16 +44,17 @@ const CheckOutForm = () => {
     const orderData: NewOrderRequest = {
       shippingInfo,
       orderItems: cartItems,
-      subTotal,
+      subtotal,
       tax,
       discount,
       shippingCharges,
       total,
       user: user?._id!,
     };
+
     const { paymentIntent, error } = await stripe.confirmPayment({
       elements,
-      configParams: { return_url: window.location.origin },
+      confirmParams: { return_url: window.location.origin },
       redirect: "if_required",
     });
 
@@ -64,6 +65,7 @@ const CheckOutForm = () => {
 
     if (paymentIntent.status === "succeeded") {
       const res = await newOrder(orderData);
+      console.log(res);
       dispatch(resetCart());
       responseToast(res, navigate, "/orders");
     }

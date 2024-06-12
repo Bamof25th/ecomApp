@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { StatsResponce } from "../../types/api-types";
+import {
+  BarResponce,
+  LineResponce,
+  PieResponce,
+  StatsResponce,
+} from "../../types/api-types";
 
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
@@ -10,15 +15,19 @@ export const dashboardApi = createApi({
   endpoints: (builder) => ({
     stats: builder.query<StatsResponce, string>({
       query: (id) => `stats?id=${id}`,
+      keepUnusedDataFor: 0,
     }),
-    pie: builder.query<string, string>({
+    pie: builder.query<PieResponce, string>({
       query: (id) => `pie?id=${id}`,
+      keepUnusedDataFor: 0,
     }),
-    bar: builder.query<string, string>({
+    bar: builder.query<BarResponce, string>({
       query: (id) => `bar?id=${id}`,
+      keepUnusedDataFor: 0,
     }),
-    line: builder.query<string, string>({
+    line: builder.query<LineResponce, string>({
       query: (id) => `line?id=${id}`,
+      keepUnusedDataFor: 0,
     }),
   }),
 });

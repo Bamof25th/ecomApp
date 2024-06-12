@@ -58,7 +58,7 @@ const Products = () => {
         data.products.map((i) => ({
           photo: <img src={`${server}/${i.photo}`} />,
           name: i.name,
-          price: i.stock,
+          price: i.price,
           stock: i.stock,
           action: <Link to={`/admin/product/${i._id}`}>Manage</Link>,
         }))

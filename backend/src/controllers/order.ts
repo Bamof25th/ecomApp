@@ -77,17 +77,8 @@ export const newOrder = TryCatch(
       discount,
     } = req.body;
 
-    if (
-      !shippingInfo ||
-      !orderItems ||
-      !user ||
-      !tax ||
-      !subtotal ||
-      !shippingCharges ||
-      !total ||
-      !discount
-    )
-      return next(new ErrorHandeler("Please Enter All Feilds", 400));
+    if (!shippingInfo || !orderItems || !user || !subtotal || !tax || !total)
+      return next(new ErrorHandeler("Please Enter All Fields", 400));
 
     const order = await Order.create({
       shippingInfo,

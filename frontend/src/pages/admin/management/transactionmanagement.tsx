@@ -22,7 +22,7 @@ const defaultData: Order = {
     pinCode: "",
   },
   status: "",
-  subTotal: 0,
+  subtotal: 0,
   discount: 0,
   shippingCharges: 0,
   tax: 0,
@@ -48,7 +48,7 @@ const TransactionManagement = () => {
     user: { name },
     status,
     total,
-    subTotal,
+    subtotal,
     tax,
     discount,
     shippingCharges,
@@ -111,7 +111,7 @@ const TransactionManagement = () => {
                 {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
               </p>
               <h5>Amount Info</h5>
-              <p>Subtotal: {subTotal}</p>
+              <p>Subtotal: {subtotal}</p>
               <p>Shipping Charges: {shippingCharges}</p>
               <p>Tax: {tax}</p>
               <p>Discount: {discount}</p>

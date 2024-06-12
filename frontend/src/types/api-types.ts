@@ -1,4 +1,14 @@
-import { CartItem, Order, Product, ShippingInfo, Stats, User } from "./types";
+import {
+  Bar,
+  CartItem,
+  Line,
+  Order,
+  Pie,
+  Product,
+  ShippingInfo,
+  Stats,
+  User,
+} from "./types";
 
 export type customError = {
   status: number;
@@ -8,7 +18,7 @@ export type customError = {
   };
 };
 
-export type MessageResponce = {
+export type MessageResponse = {
   success: string;
   message: string;
 };
@@ -62,7 +72,7 @@ export type DeleteProductRequest = {
 export type NewOrderRequest = {
   orderItems: CartItem[];
   shippingInfo: ShippingInfo;
-  subTotal: number;
+  subtotal: number;
   tax: number;
   shippingCharges: number;
   discount: number;
@@ -91,4 +101,16 @@ export type OrderDetailResponce = {
 export type StatsResponce = {
   success: boolean;
   stats: Stats;
+};
+export type PieResponce = {
+  success: boolean;
+  charts: Pie;
+};
+export type BarResponce = {
+  success: boolean;
+  charts: Bar;
+};
+export type LineResponce = {
+  success: boolean;
+  charts: Line;
 };

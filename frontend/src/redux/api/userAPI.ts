@@ -3,7 +3,7 @@ import axios from "axios";
 import {
   AllUserResponce,
   DeleteUserRequest,
-  MessageResponce,
+  MessageResponse,
   UserResponce,
 } from "../../types/api-types";
 import { User } from "../../types/types";
@@ -15,7 +15,7 @@ export const userAPI = createApi({
   }),
   tagTypes: ["users"],
   endpoints: (builder) => ({
-    login: builder.mutation<MessageResponce, User>({
+    login: builder.mutation<MessageResponse, User>({
       query: (user) => ({
         url: "new",
         method: "POST",
@@ -23,7 +23,7 @@ export const userAPI = createApi({
       }),
       invalidatesTags: ["users"],
     }),
-    deleteUser: builder.mutation<MessageResponce, DeleteUserRequest>({
+    deleteUser: builder.mutation<MessageResponse, DeleteUserRequest>({
       query: ({ userId, adminUserId }) => ({
         url: `${userId}?id=${adminUserId}`,
         method: "DELETE",

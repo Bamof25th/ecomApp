@@ -3,7 +3,7 @@ import {
   AllProductsResponce,
   CategoriesResponce,
   DeleteProductRequest,
-  MessageResponce,
+  MessageResponse,
   NewProductRequest,
   ProductDeatailsResponce,
   SearchProductsRequest,
@@ -51,7 +51,7 @@ export const productAPI = createApi({
       query: (id) => id,
       providesTags: ["product"],
     }),
-    newProduct: builder.mutation<MessageResponce, NewProductRequest>({
+    newProduct: builder.mutation<MessageResponse, NewProductRequest>({
       query: ({ formData, id }) => ({
         url: `new?id=${id}`,
         method: "POST",
@@ -59,7 +59,7 @@ export const productAPI = createApi({
       }),
       invalidatesTags: ["product"],
     }),
-    updateProduct: builder.mutation<MessageResponce, UpdateProductRequest>({
+    updateProduct: builder.mutation<MessageResponse, UpdateProductRequest>({
       query: ({ formData, userId, productId }) => ({
         url: `${productId}?id=${userId}`,
         method: "PUT",
@@ -67,7 +67,7 @@ export const productAPI = createApi({
       }),
       invalidatesTags: ["product"],
     }),
-    deleteProduct: builder.mutation<MessageResponce, DeleteProductRequest>({
+    deleteProduct: builder.mutation<MessageResponse, DeleteProductRequest>({
       query: ({ userId, productId }) => ({
         url: `${productId}?id=${userId}`,
         method: "DELETE",

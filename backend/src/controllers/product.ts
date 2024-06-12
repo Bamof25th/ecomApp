@@ -49,7 +49,7 @@ export const getAdminProducts = TryCatch(
     //   products = await Product.find({});
     //   myCache.set("all-products", JSON.stringify(products));
     // }
-      products = await Product.find({});
+    products = await Product.find({});
     return res.status(201).json({ success: true, products });
   }
 );
@@ -78,7 +78,8 @@ export const newProduct = TryCatch(
     const { name, price, stock, category } = req.body;
     const photo = req.file;
     if (!photo) return next(new ErrorHandeler("Please add Image", 400));
-
+    if (stock <= 0 || price <= 0)
+      return next(new ErrorHandeler("Please fill all feilds Correctly", 400));
     if (!name || !category || !price || !stock) {
       rm(photo.path, () => {
         console.log("Deleted");
@@ -109,6 +110,8 @@ export const updateProduct = TryCatch(
     const photo = req.file;
     const product = await Product.findById(id);
 
+    if (stock <= 0 || price <= 0)
+      return next(new ErrorHandeler("Please fill all feilds Correctly", 400));
     if (!product) return next(new ErrorHandeler("Invalid Product Id", 404));
 
     if (photo) {
@@ -119,8 +122,8 @@ export const updateProduct = TryCatch(
       product.photo = photo.path;
     }
     if (name) product.name = name;
-    if (stock) product.stock = stock;
-    if (price) product.price = price;
+    if (stock > 0) product.stock = stock;
+    if (price > 0) product.price = price;
     if (category) product.category = category.toLowerCase();
 
     await product.save();
