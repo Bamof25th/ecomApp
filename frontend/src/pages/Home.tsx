@@ -22,29 +22,31 @@ const Home = () => {
   return isLoading ? (
     <Skeleton width="80vw" />
   ) : (
-    <div className="home">
-      <section></section>
-      <h1>
-        Latest Products
-        <Link to="/search" className="findmore">
-          More
-        </Link>
-      </h1>
+    <>
+      <div className="home">
+        <section></section>
+        <h1>
+          Latest Products
+          <Link to="/search" className="findmore">
+            More
+          </Link>
+        </h1>
 
-      <main>
-        {data?.products.map((i) => (
-          <ProductCard
-            key={i._id}
-            productId={i._id}
-            name={i.name}
-            price={i.price}
-            stock={i.stock}
-            handeler={addTocartHandeler}
-            photo={i.photo}
-          />
-        ))}
-      </main>
-    </div>
+        <main>
+          {data?.products.map((i) => (
+            <ProductCard
+              key={i._id}
+              productId={i._id}
+              name={i.name}
+              price={i.price}
+              stock={i.stock}
+              handeler={addTocartHandeler}
+              photo={i.photo}
+            />
+          ))}
+        </main>
+      </div>
+    </>
   );
 };
 

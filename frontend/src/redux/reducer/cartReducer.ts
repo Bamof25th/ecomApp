@@ -7,7 +7,7 @@ const initialState: cartReducerInitialState = {
   cartItems: [],
   subtotal: 0,
   tax: 0,
-  shippingCharges: 0,
+  shippingCharges:50,
   discount: 0,
   total: 0,
   shippingInfo: {
